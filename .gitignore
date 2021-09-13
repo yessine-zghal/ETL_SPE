@@ -132,3 +132,4 @@ dmypy.json
 /kafka/data.json
 /transcriptions
 /data
+/testairflow

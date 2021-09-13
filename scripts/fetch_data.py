@@ -6,6 +6,10 @@ import logging
 from tqdm import tqdm as tq, trange 
 import sys
 import os
+import pyspark
+from pyspark.sql import SparkSession
+import os
+import boto3
 
 logging.basicConfig(filename='../logs/fetch_data.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.DEBUG)
 
@@ -22,7 +26,7 @@ def gen_data():
         print ("Reading data \n")
         logging.info("Reading data")
         for reading in trange((1),desc="Reading data"):
-            data=pd.read_csv('../data/Clean_Amharic.txt',header=None)
+            data=pd.read_csv("s3a://grouphu-text-bucket/Clean_Amharic.txt")
         
         print(" Done \n")
 
@@ -49,7 +53,7 @@ def gen_data():
     data.to_csv('amharic.csv',index=False)
     
     
-    print("Creating dictonary for serialization ....")
+    print("Creating dictionary for serialization ....")
     corpus={}
     with open('amharic.csv') as csvFile:
         csvReader=csv.DictReader(csvFile)

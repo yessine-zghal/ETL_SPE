@@ -5,7 +5,7 @@ import logging
 from tqdm import tqdm as tq, trange 
 import sys
 import os
-
+import boto3
 logging.basicConfig(filename='../logs/producer_audio.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
 
@@ -16,7 +16,8 @@ def get_audio():
     """
     try:
         print("Fetching Audio File... \n")
-        sound=wavio.read('../audio/test2.wav')
+        client=boto3.client('s3')
+        sound=wavio.read('s3://grouphu-audio-bucket/test.wav')
         print("Done \n")
     except  FileNotFoundError as e:
         logging.info("File was not found")
@@ -25,7 +26,7 @@ def get_audio():
         print("Exiting the system")
         sys.exit(1)
 
-    for i in tq(range(100),desc="Unpacking Audio..")
+    for i in tq(range(100),desc="Unpacking Audio.."):
         data=sound.data
         srate=sound.rate
         swidth=sound.sampwidth
@@ -34,3 +35,8 @@ def get_audio():
     details={'data':data.tolist(),'sample_rate':srate,'sample width':swidth}
     # print(details)
     return details
+
+if __name__ == "__main__":
+    #if ran as a script we want to access the following functions
+    get_audio()
+
