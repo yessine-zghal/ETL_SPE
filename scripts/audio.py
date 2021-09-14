@@ -17,7 +17,7 @@ def get_audio():
     try:
         print("Fetching Audio File... \n")
         client=boto3.client('s3')
-        sound=wavio.read('s3://grouphu-audio-bucket/test.wav')
+        sound=wavio.read('/mnt/10ac-batch-4/all-notebooks/blaise_papa/Speech-Data-Pipeline/audio/test.wav')
         print("Done \n")
     except  FileNotFoundError as e:
         logging.info("File was not found")
