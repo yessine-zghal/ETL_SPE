@@ -133,3 +133,5 @@ dmypy.json
 /transcriptions
 /data
 /testairflow
+/scripts/amharic.csv
+/scripts/rep.csv
