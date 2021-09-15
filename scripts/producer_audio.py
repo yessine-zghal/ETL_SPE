@@ -33,9 +33,9 @@ def producer_audio():
     
     except Exception as e:
         
-        logging.info("An error has occured")
-        logging.error("The following error occured {} ".format(e.__class__))
-        print("The following error occured {} ".format(e.__class__))
+        logging.info("An error has occurred")
+        logging.error("The following error occurred {} ".format(e.__class__))
+        print("The following error occurred {} ".format(e.__class__))
         print("Exiting the system")
         sys.exit(1)
     

@@ -8,6 +8,7 @@ import logging
 from tqdm import tqdm as tq, trange 
 import sys
 import os
+from spark_data import get_from_s3
 
 logging.basicConfig(filename='../logs/producer_trans.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
@@ -23,7 +24,7 @@ def json_serializer(data):
 
 def produce_transcriptions():
     """
-    This function creates a kakfa producer object and through it send data transcriptions to the kafka topic
+    This function creates a kafka producer object and through it send data transcriptions to the kafka topic
     
     """
     try:
@@ -31,7 +32,7 @@ def produce_transcriptions():
         logging.info("Accessing Topic..")
         print("Accessing kafka topic")
         for i in tq(range(100),desc="Accessing Broker.."):
-            producer=KafkaProducer(bootstrap_servers=["b-1.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092","b-2.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092"],value_serializer=json_serializer)
+            producer=KafkaProducer(bootstrap_servers=["b-1.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092","b-2.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092"])
         
         print("Done")
 
@@ -50,13 +51,16 @@ def produce_transcriptions():
         logging.info("Producing Transcripts..")
         print("Producing Transcriptions")
        
-        data = gen_data()
+        data = gen_data("s3a://grouphu-text-bucket/Clean_Amharic.txt")
         
         
-        for text in data.items():
-            print("Publishing to Topic..\n")
+        for key,text in data.items():
             
-            producer.send("groupHu_speech",text)
+            
+            print("Publishing to Topic..\n")
+            print(text)
+            
+            producer.send("groupHu_speech",key=str.encode(key),value=str.encode(text))
             print("Done...\n")
             time.sleep(4)
 
