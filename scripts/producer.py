@@ -32,7 +32,7 @@ def produce_transcriptions():
         logging.info("Accessing Topic..")
         print("Accessing kafka topic")
         for i in tq(range(100),desc="Accessing Broker.."):
-            producer=KafkaProducer(bootstrap_servers=["b-1.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092","b-2.demo-cluster-1.9q7lp7.c1.kafka.eu-west-1.amazonaws.com:9092"])
+            producer=KafkaProducer(bootstrap_servers='localhost:9092')
         
         print("Done")
 
